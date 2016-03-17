@@ -1,0 +1,70 @@
+<?php
+
+namespace General\GeneralBundle\Form;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+class QuestionType extends AbstractType
+{
+        /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            ->add('title', 'text', array (
+				'label' => 'Story title',
+				'attr' => array (
+						'placeholder' => 'i.e: road trip across France',
+				) 
+		) )
+				
+		/*
+		 * $builder->add('fromDate','datetime',array( 'input' => 'datetime', 'widget' => 'single_text', 'format' => 'dd-MM-yyyy', 'attr' => array('class' => 'date') )); $builder->add('toDate','datetime',array( 'input' => 'datetime', 'widget' => 'single_text', 'format' => 'dd-MM-yyyy', 'attr' => array('class' => 'date') ));
+		 */
+				
+		->add ( 'description', 'ckeditor', array (
+				'label' => 'Your Story',
+				'attr' => array (
+						'placeholder' => 'Minimum 1000 characters ', 
+				) ,
+			
+				'config' => array(
+					'filebrowserUploadRoute' => 'GeneralGeneralBundle_account_profile_question_photo_upload',
+					'filebrowserUploadRouteParameters' => array('user_id' => '10', 'responseType' => 'json'),
+					'filebrowserUploadRouteAbsolute'   => true,
+				),
+				
+		) )
+		
+		->add ( 'tags', 'text', array (
+				'label' => 'Related tags',
+				'attr' => array (
+						'placeholder' => 'i.e: road trip, city tour, argentina',
+						'class' => 'input-medium search-query' 
+				) 
+		) );
+
+    }
+    
+    /**
+     * @param OptionsResolverInterface $resolver
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'General\GeneralBundle\Entity\Question'
+        ));
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return 'general_question';
+    }
+}
